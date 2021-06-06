@@ -5,8 +5,9 @@ import MainLayout from "../components/mainlayout";
 import { useState } from "react";
 import Wrapper from "../components/wrapper";
 import RangeWrrapped from "../components/rangeWrapped";
-import IRangeWrapperProps from "../interfaces/IRangeWrapperProps";
+import IRangeProps from "../interfaces/IRangeProps";
 import Timer from "../components/timer";
+import { useFormik } from "formik";
 
 const Container = styled.form`
   display: grid;
@@ -15,10 +16,25 @@ const Container = styled.form`
   grid-gap: 40px;
   max-width: 1460px;
 `;
-const ranges: IRangeWrapperProps[] = [
+const Button = styled.button`
+background: #FDD207;
+font-family: Roboto;
+font-style: normal;
+font-weight: bold;
+font-size: 49px;
+line-height: 57px;
+min-width 390px;
+height: 110px;
+border-radius: 55px;
+color: #371548;
+border: none;
+min-width: 390px;
+`;
+const ranges: IRangeProps[] = [
   {
     title: "Сколько слов",
     sliderProps: {
+      name: "quantityWords",
       defaultValue: 7,
       min: 1,
       step: 1,
@@ -28,6 +44,7 @@ const ranges: IRangeWrapperProps[] = [
   {
     title: "Стартовое расстояние",
     sliderProps: {
+      name: "lenghtOfWord",
       defaultValue: 25,
       min: 5,
       step: 5,
@@ -37,6 +54,7 @@ const ranges: IRangeWrapperProps[] = [
   {
     title: "Сколько букв в словах",
     sliderProps: {
+      name: "startDistance",
       defaultValue: 9,
       min: 3,
       step: 1,
@@ -46,6 +64,7 @@ const ranges: IRangeWrapperProps[] = [
   {
     title: "Увеличение расстояния",
     sliderProps: {
+      name: "changeDistance",
       defaultValue: 25,
       min: 5,
       step: 5,
@@ -53,24 +72,39 @@ const ranges: IRangeWrapperProps[] = [
     },
   },
 ];
+const speed = "speed";
+
 export default function Home() {
   const value = 5;
-
+  const { handleSubmit, handleChange, values } = useFormik({
+    initialValues: Object.assign(
+      {
+        [speed]: "1,0",
+      },
+      ...ranges.map((range) => ({
+        [range.sliderProps.name]: range.sliderProps.defaultValue,
+      }))
+    ),
+    onSubmit: (valuse) => {
+      console.log(values);
+    },
+  });
   return (
     <MainLayout title={"Settings"} pageTitle="Тренажер «Поле зрения»">
       <Container
-      //          onSubmit={(prop)=>{
-      //           prop.preventDefault()
-      // console.log(prop)
-      //         }}
+        onSubmit={handleSubmit}
+        //  {(prop)=>{
+        //           prop.preventDefault()
+        // console.log(prop)
+        //         }}
       >
-        <Timer />
+        <Timer name={speed} handler={handleChange} value={values[speed]} />
 
         {ranges.map((range, index) => (
-          <RangeWrrapped {...range} key={index} />
+          <RangeWrrapped {...range} key={index} handler={handleChange} />
         ))}
         <Wrapper transparent>
-          aa <button type="submit">sub</button>{" "}
+          <Button type="submit">Старт</Button>{" "}
         </Wrapper>
       </Container>
     </MainLayout>

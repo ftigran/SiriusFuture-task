@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import Wrapper from "./wrapper";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
-import IRangeWrapperProps from "../interfaces/IRangeWrapperProps";
+import IRangeProps from "../interfaces/IRangeProps";
 
 const SliderStyled = styled.div`
   .rc-slider {
@@ -59,18 +59,27 @@ function getMarks<A>(
   }
   return a;
 }
-
-export default ({ title, sliderProps }: IRangeWrapperProps) => {
+interface IRangeWrapperProps extends IRangeProps {
+  handler: (val: number) => void;
+}
+export default function rangeWrapped({
+  title,
+  sliderProps,
+  handler,
+}: IRangeWrapperProps) {
   return (
     <Wrapper>
       <p>{title}</p>
 
       <SliderStyled>
         <Slider
+          // type='number'
           marks={getMarks(sliderProps.min, sliderProps.max, sliderProps.step)}
+          // id={sliderProps.name}
+          onChange={handler}
           {...sliderProps}
         />
       </SliderStyled>
     </Wrapper>
   );
-};
+}
