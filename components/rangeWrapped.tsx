@@ -2,13 +2,8 @@ import styled from '@emotion/styled'
 import Wrapper from './wrapper'
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
+import IRangeWrapperProps from '../interfaces/IRangeWrapperProps'
 
-interface IRangeWrapperProps{
-  title: string;
-  sliderProps: {
-    
-  }
-}
 const MaxWidth = styled.div`
   max-width: 544px;
   width: 100%;
@@ -50,7 +45,8 @@ margin: 0;
     font-weight: bold;
     font-size: 38px;
     line-height: 45px;
-  
+    min-width: 45px;
+
     color: #000000;
     }
     .rc-slider-mark {
@@ -61,23 +57,23 @@ margin: 0;
     }
   }
 `    
-
+function getMarks<A>(min:number, max:number, step:number):{[A:number]:[A]}{
+  const a = {}
+  for (let key =min; key<=max; key=(max-min)/step>10?key+step*2:key+step){
+    a[key]=key
+  }
+  return a
+}
 
     export default ({title, sliderProps}:IRangeWrapperProps)=>{
-      function getMarks<A>(min:number, max:number, step:number):{[A:number]:[A:number]}{
-        const a = {}
-        for (let key =min; key<=max; key=key+step){
-          a[key]=key
-        }
-        return a
-      }
+
       return(
         <Wrapper>
           <MaxWidth>
             <p>{title}</p>
             
             <Slider 
-              marks={getMarks(1,10,1)}
+              marks={getMarks(sliderProps.min,sliderProps.max,sliderProps.step)}
               {...sliderProps}
                 />
           </MaxWidth>
