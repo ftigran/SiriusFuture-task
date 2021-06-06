@@ -6,6 +6,7 @@ import { useState } from "react";
 import Wrapper from "../components/wrapper";
 import RangeWrrapped from "../components/rangeWrapped";
 import IRangeWrapperProps from "../interfaces/IRangeWrapperProps";
+import Timer from "../components/timer";
 
 const Container = styled.form`
   display: grid;
@@ -63,15 +64,11 @@ export default function Home() {
       // console.log(prop)
       //         }}
       >
-        <Wrapper>
-          <input type="text" />
-        </Wrapper>
-        <Wrapper>{/* <Range /> */}</Wrapper>
+        <Timer />
+
         {ranges.map((range, index) => (
           <RangeWrrapped {...range} key={index} />
         ))}
-        <Wrapper>qq</Wrapper>
-        <Wrapper>qq</Wrapper>
         <Wrapper transparent>
           aa <button type="submit">sub</button>{" "}
         </Wrapper>

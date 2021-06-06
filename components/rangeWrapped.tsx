@@ -1,37 +1,24 @@
-import styled from '@emotion/styled'
-import Wrapper from './wrapper'
-import Slider from 'rc-slider';
-import 'rc-slider/assets/index.css';
-import IRangeWrapperProps from '../interfaces/IRangeWrapperProps'
+import styled from "@emotion/styled";
+import Wrapper from "./wrapper";
+import Slider from "rc-slider";
+import "rc-slider/assets/index.css";
+import IRangeWrapperProps from "../interfaces/IRangeWrapperProps";
 
-const MaxWidth = styled.div`
-  max-width: 544px;
-  width: 100%;
-  p{
-    font-family: Roboto;
-font-style: normal;
-font-weight: bold;
-font-size: 48px;
-line-height: 57px;
-text-align: center;
-
-color: #371548;
-margin: 0;
-  }
-  .rc-slider{
+const SliderStyled = styled.div`
+  .rc-slider {
     padding-top: 83px;
     padding-bottom: 36px;
-    .rc-slider-track{
+    .rc-slider-track {
       height: 23px;
-      background: #FDD207;
+      background: #fdd207;
       border-radius: 11px;
     }
     .rc-slider-handle {
-      border: 12px solid #FDD207;
+      border: 12px solid #fdd207;
       width: 44px;
       height: 44px;
       margin-top: -10px;
-      background:#0E0C0B;
+      background: #0e0c0b;
     }
     .rc-slider-rail {
       background: transparent;
@@ -40,44 +27,50 @@ margin: 0;
       display: none;
     }
     .rc-slider-mark-text {
-     font-family: Roboto;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 38px;
-    line-height: 45px;
-    min-width: 45px;
+      font-family: Roboto;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 38px;
+      line-height: 45px;
+      min-width: 45px;
 
-    color: #000000;
+      color: #000000;
     }
     .rc-slider-mark {
       top: 13px;
       width: 94%;
       margin-right: 3%;
-      margin-left: 3%
+      margin-left: 3%;
     }
   }
-`    
-function getMarks<A>(min:number, max:number, step:number):{[A:number]:[A]}{
-  const a = {}
-  for (let key =min; key<=max; key=(max-min)/step>10?key+step*2:key+step){
-    a[key]=key
+`;
+function getMarks<A>(
+  min: number,
+  max: number,
+  step: number
+): { [A: number]: [A] } {
+  const a = {};
+  for (
+    let key = min;
+    key <= max;
+    key = (max - min) / step > 10 ? key + step * 2 : key + step
+  ) {
+    a[key] = key;
   }
-  return a
+  return a;
 }
 
-    export default ({title, sliderProps}:IRangeWrapperProps)=>{
+export default ({ title, sliderProps }: IRangeWrapperProps) => {
+  return (
+    <Wrapper>
+      <p>{title}</p>
 
-      return(
-        <Wrapper>
-          <MaxWidth>
-            <p>{title}</p>
-            
-            <Slider 
-              marks={getMarks(sliderProps.min,sliderProps.max,sliderProps.step)}
-              {...sliderProps}
-                />
-          </MaxWidth>
-    
-        </Wrapper>
-      )
-    }
+      <SliderStyled>
+        <Slider
+          marks={getMarks(sliderProps.min, sliderProps.max, sliderProps.step)}
+          {...sliderProps}
+        />
+      </SliderStyled>
+    </Wrapper>
+  );
+};
